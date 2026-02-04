@@ -184,7 +184,6 @@ PHP_Laravel12_With_SQLite/database/
 
 4. Select database.sqlite and click Open.
 
-5. Click Open
 
 ## STEP 8.3: View Tables
 
