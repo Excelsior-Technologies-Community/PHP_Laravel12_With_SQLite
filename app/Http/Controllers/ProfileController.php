@@ -9,8 +9,27 @@ class ProfileController extends Controller
 {
     public function index()
     {
-        $profiles = Profile::all();
+        $profiles = Profile::orderBy('id', 'asc')->paginate(5);
+
         return view('profiles.index', compact('profiles'));
+    }
+
+    /*  AJAX SEARCH + PAGINATION */
+    public function search(Request $request)
+    {
+        $query = Profile::query();
+
+        if ($request->filled('search')) {
+            $query->where('name', 'like', "%{$request->search}%")
+                ->orWhere('email', 'like', "%{$request->search}%");
+        }
+
+        $profiles = $query->orderBy('id', 'asc')->paginate(5);
+
+        return response()->json([
+            'data' => $profiles->items(),
+            'links' => $profiles->links()->render()
+        ]);
     }
 
     public function create()
