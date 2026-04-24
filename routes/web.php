@@ -7,7 +7,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-
+Route::get('/profiles/search', [ProfileController::class, 'search']);
 Route::get('/profiles', [ProfileController::class, 'index']);
 Route::get('/profiles/create', [ProfileController::class, 'create']);
 Route::post('/profiles/store', [ProfileController::class, 'store']);
