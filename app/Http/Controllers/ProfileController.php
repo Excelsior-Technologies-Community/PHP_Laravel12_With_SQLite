@@ -10,11 +10,9 @@ class ProfileController extends Controller
     public function index()
     {
         $profiles = Profile::orderBy('id', 'asc')->paginate(5);
-
         return view('profiles.index', compact('profiles'));
     }
 
-    /*  AJAX SEARCH + PAGINATION */
     public function search(Request $request)
     {
         $query = Profile::query();
@@ -28,7 +26,7 @@ class ProfileController extends Controller
 
         return response()->json([
             'data' => $profiles->items(),
-            'links' => $profiles->links()->render()
+            'links' => (string) $profiles->links()
         ]);
     }
 
@@ -46,7 +44,7 @@ class ProfileController extends Controller
 
         Profile::create($request->all());
 
-        return redirect('/profiles')->with('success', 'Profile added successfully');
+        return redirect('/profiles')->with('success', 'Profile added successfully!');
     }
 
     public function edit($id)
@@ -57,15 +55,22 @@ class ProfileController extends Controller
 
     public function update(Request $request, $id)
     {
+        $request->validate([
+            'name' => 'required',
+            'email' => 'required|email'
+        ]);
+
         $profile = Profile::findOrFail($id);
         $profile->update($request->all());
 
-        return redirect('/profiles')->with('success', 'Profile updated successfully');
+        return redirect('/profiles')->with('success', 'Profile updated successfully!');
     }
 
     public function destroy($id)
     {
-        Profile::destroy($id);
-        return redirect('/profiles')->with('success', 'Profile deleted successfully');
+        $profile = Profile::findOrFail($id);
+        $profile->delete();
+
+        return redirect('/profiles')->with('success', 'Profile deleted successfully!');
     }
 }
