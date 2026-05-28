@@ -43,7 +43,7 @@
 
             <div class="card">
                 <div class="card-header">
-                    ✏ Edit Profile
+                     Edit Profile
                 </div>
 
                 <div class="card-body p-4">
